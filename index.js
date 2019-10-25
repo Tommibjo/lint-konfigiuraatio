@@ -1,16 +1,16 @@
 const express = require("express")
 const app = express()
 const bodyParser = require("body-parser")
-const morgan = require('morgan')
-const cors = require('cors')
-const Person = require('./models/person')
+const morgan = require("morgan")
+const cors = require("cors")
+const Person = require("./models/person")
 app.use(cors())
-app.use(express.static('build'))
+app.use(express.static("build"))
 app.use(bodyParser.json())
-morgan.token('body', function (req, res) {
+morgan.token("body", function (req) {
     return JSON.stringify(req.body)
 })
-app.use(morgan(':method :url :status :res[content-length] :response-time ms - :body'))
+app.use(morgan(":method :url :status :res[content-length] :response-time ms - :body"))
 
 
 // Toimivat mongoosen kanssa
@@ -45,7 +45,7 @@ app.post("/api/persons/", (request, response, next) => {
     }).catch(error => next(error))
 })
 
-app.put('/api/persons/:id', (request, response) => {
+app.put("/api/persons/:id", (request, response, next) => {
     const person = request.body
     console.log(person)
 
@@ -91,9 +91,6 @@ const errorHandler = (error, req, res, next) => {
         console.log(error)
         return res.status(409).send({ error: "Diudau" + error.message })
     }
-    console.log(error)
-    return res.status(409).send({ error: error.message })
-
     next(error)
 }
 
